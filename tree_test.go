@@ -25,14 +25,14 @@ var _ = Suite(&TreeSuite{})
 
 func (s *TreeSuite) SetUpTest(c *C) {
 	var f Node = TestValue(0.0)
-	s.t = New(&f)
+	s.t = New(f)
 	s.r = rand.New(rand.NewSource(88))
 }
 
 func (s *TreeSuite) TestNew(c *C) {
 	c.Check(s.t.Left, IsNil)
 	c.Check(s.t.Right, IsNil)
-	c.Check((*s.t.Value).Index(), Equals, 0.0)
+	c.Check(s.t.Value.Index(), Equals, 0.0)
 }
 
 func (s *TreeSuite) TestInsert(c *C) {
@@ -41,10 +41,9 @@ func (s *TreeSuite) TestInsert(c *C) {
 
 	// Generate values and insert them into the tree.
 	for i := 1; i < cap(values); i++ {
-		var f Node
 		values[i] = s.r.Float64()
-		f = TestValue(values[i])
-		s.t.Insert(&f)
+		var f Node = TestValue(values[i])
+		s.t.Insert(f)
 	}
 	// Sort the values because we expect the in-order traversal
 	// to visit the nodes in order.
@@ -55,7 +54,7 @@ func (s *TreeSuite) TestInsert(c *C) {
 	results := make([]float64, 0, 11)
 	collect := func(t *Tree) *Tree {
 		results = results[0 : len(results)+1]
-		results[len(results)-1] = (*t.Value).Index()
+		results[len(results)-1] = t.Value.Index()
 		return t
 	}
 

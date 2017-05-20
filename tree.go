@@ -4,7 +4,7 @@ package tree
 // for many different types to be used
 // within a tree so long as they define
 // some sort of index that can be represented
-// as a float32.
+// as a float64.
 type Node interface {
 	Index() float64
 }
@@ -12,23 +12,23 @@ type Node interface {
 // Tree is a recursive data structure representing a binary tree.
 type Tree struct {
 	Left  *Tree
-	Value *Node
+	Value Node
 	Right *Tree
 }
 
 // New creates a fresh zero defaulted Tree.
-func New(v *Node) *Tree {
+func New(v Node) *Tree {
 	return &Tree{nil, v, nil}
 }
 
 // Insert adds value v into the proper position within
 // the tree.
-func (t *Tree) Insert(v *Node) *Tree {
+func (t *Tree) Insert(v Node) *Tree {
 	if t == nil {
 		return New(v)
 	}
 
-	if (*v).Index() < (*t.Value).Index() {
+	if v.Index() < t.Value.Index() {
 		t.Left = t.Left.Insert(v)
 	} else {
 		t.Right = t.Right.Insert(v)
@@ -37,7 +37,7 @@ func (t *Tree) Insert(v *Node) *Tree {
 	return t
 }
 
-func minValue(t *Tree) *Node {
+func minValue(t *Tree) Node {
 	min := t.Value
 
 	for t.Left != nil {
@@ -50,13 +50,13 @@ func minValue(t *Tree) *Node {
 
 // Delete removes the node with value v from the tree.
 // When successful the deleted node will be returned.
-func (t *Tree) Delete(v *Node) *Tree {
+func (t *Tree) Delete(v Node) *Tree {
 	switch {
 	case t == nil:
 		return t
-	case (*v).Index() < (*t.Value).Index():
+	case v.Index() < t.Value.Index():
 		t.Left = t.Left.Delete(v)
-	case (*v).Index() > (*t.Value).Index():
+	case v.Index() > t.Value.Index():
 		t.Right = t.Right.Delete(v)
 	default:
 		if t.Left == nil {
@@ -76,12 +76,12 @@ func (t *Tree) Delete(v *Node) *Tree {
 
 // Find locates value v and returns the Tree node
 // containing it.
-func (t *Tree) Find(v *Node) *Tree {
-	if t == nil || (*t.Value).Index() == (*v).Index() {
+func (t *Tree) Find(v Node) *Tree {
+	if t == nil || t.Value.Index() == v.Index() {
 		return t
 	}
 
-	if (*v).Index() < (*t.Value).Index() {
+	if v.Index() < t.Value.Index() {
 		return t.Left.Find(v)
 	}
 
