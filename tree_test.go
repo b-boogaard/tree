@@ -64,11 +64,11 @@ type max struct {
 }
 
 func (s *TreeSuite) TestTraverse(c *C) {
-	var maxValue = &max{0.0}
+	var maxValue float64
 
 	traverseFunc := func(t *Tree) *Tree {
-		if maxValue.value < t.Value.Index() {
-			maxValue.value = t.Value.Index()
+		if maxValue < t.Value.Index() {
+			maxValue = t.Value.Index()
 		}
 		return t
 	}
@@ -78,7 +78,7 @@ func (s *TreeSuite) TestTraverse(c *C) {
 
 	s.t.Traverse(traverseFunc)
 
-	c.Check(maxValue.value, Equals, values[len(values)-1])
+	c.Check(maxValue, Equals, values[len(values)-1])
 }
 
 func (s *TreeSuite) TestInsert(c *C) {
