@@ -49,7 +49,7 @@ func minValue(t *Tree) Node {
 }
 
 // Delete removes the node with value v from the tree.
-// When successful the deleted node will be returned.
+// When successful the root will be returned.
 func (t *Tree) Delete(v Node) *Tree {
 	switch {
 	case t == nil:
