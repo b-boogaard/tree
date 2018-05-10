@@ -25,7 +25,7 @@ type TreeSuite struct {
 var _ = Suite(&TreeSuite{})
 
 func initialize(r *rand.Rand) (*Tree, float64) {
-	var initial float64 = r.Float64()
+	var initial = r.Float64()
 	var f Node = TestValue(initial)
 	return New(f), initial
 }
@@ -57,10 +57,6 @@ func (s *TreeSuite) TestNew(c *C) {
 	c.Check(s.t.Left, IsNil)
 	c.Check(s.t.Right, IsNil)
 	c.Check(s.t.Value.Index(), Equals, s.i)
-}
-
-type max struct {
-	value float64
 }
 
 func (s *TreeSuite) TestTraverse(c *C) {
